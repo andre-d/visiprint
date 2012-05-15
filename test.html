@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Visiprint 1.0</title>
+        <script src="visiprint.js"></script>
+        <script src="http://crypto-js.googlecode.com/svn/tags/3.0/build/rollups/sha256.js"></script>
+        <script type="text/javascript">
+            function go(element) {
+                visiprint_test(element.form.elements[0].value)
+            }
+            function visiprint_test(text) {
+                msg = CryptoJS.SHA256(text)
+                document.getElementById("hash").textContent = msg
+                fingerprint = visiprint.fingerprint_randomart(msg.toString(CryptoJS.enc.Latin1))
+                output = visiprint.text_fingerprint(fingerprint, visiprint.sample_characters)
+                document.getElementById("result").textContent = output
+                visiprint.canvas_fingerprint(document.getElementById("visiprint"), fingerprint,  visiprint.sample_colors, 6)
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <h1>Visiprint 1.0</h1>
+        </header>
+        <aside role="complementary">
+            Visiprint is a javascript library to complement the OpenSSH "randomart" fingerprint system.
+            Visiprint can be used to assist users in noticing subtle differences in sets hashed sets of characters, or cryptographic keys.
+        </aside>
+        <div role="main">
+            <h2>Try it for yourself</h2>
+            <form onsubmit="return false">
+                <label for="text">Text to be fingerprinted</label><input name="text" type="text" />
+                <input type="submit" value="Go" onclick="go(this)" />
+            </form>
+            
+            <pre>SHA256: </pre>
+            <pre id="hash"></pre>
+            <pre>Visiprint</pre>
+            <canvas id="visiprint">Canvas is not supported in this browser</canvas>
+            <pre>Fingerprint</pre>
+            <pre id="result"></pre>
+        </div>
+        
+    </body>
+</html>
